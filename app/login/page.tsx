@@ -33,20 +33,26 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const user = session.user;
-        setName(user.user_metadata.full_name || user.email?.split('@')[0] || "User");
-        if (user.user_metadata.avatar_url) {
-          const base64 = await convertToBase64(user.user_metadata.avatar_url);
-          if (base64) setProfilePic(base64);
+    // Subscribe to auth state changes — this fires when Supabase
+    // processes the OAuth redirect and a session is established.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+          const user = session.user;
+          setName(user.user_metadata.full_name || user.email?.split('@')[0] || "User");
+          if (user.user_metadata.avatar_url) {
+            const base64 = await convertToBase64(user.user_metadata.avatar_url);
+            if (base64) setProfilePic(base64);
+          }
+          login();
+          router.push('/home');
         }
-        login();
-        router.push('/home');
       }
+    );
+
+    return () => {
+      subscription.unsubscribe();
     };
-    checkUser();
   }, [router, setName, setProfilePic, login]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

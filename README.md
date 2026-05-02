@@ -1,5 +1,7 @@
 # 🌟 Greetings App
 
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-greetingss.vercel.app-brightgreen?style=for-the-badge)](https://greetingss.vercel.app/)
+
 A modern, fast, and interactive web application for generating personalized, high-quality greeting cards. Built with cutting-edge web technologies, it allows users to choose from a variety of beautifully designed templates, customize them with their name and profile picture, and download or share them instantly.
 
 ---
@@ -87,6 +89,12 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application running.
+
+---
+
+## 🌐 Live Demo
+
+The app is deployed and live at: **[https://greetingss.vercel.app/](https://greetingss.vercel.app/)**
 
 ---
 
