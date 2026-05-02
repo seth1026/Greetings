@@ -38,6 +38,8 @@ export default function Navbar() {
               src="/logo.png" 
               alt="Greetings Logo" 
               fill 
+              sizes="48px"
+              priority
               className="object-contain drop-shadow-md" 
             />
           </div>
@@ -76,6 +78,7 @@ export default function Navbar() {
                     src={profilePic}
                     alt="Profile"
                     fill
+                    sizes="36px"
                     className="object-cover"
                     unoptimized={profilePic?.startsWith('data:')}
                   />

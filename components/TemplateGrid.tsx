@@ -13,7 +13,7 @@ interface TemplateGridProps {
 }
 
 export default function TemplateGrid({ templates, selectedCategory }: TemplateGridProps) {
-  const { name, profilePic } = useUserStore();
+  const { name, profilePic, isPremium } = useUserStore();
 
   const filteredTemplates = selectedCategory === "All" 
     ? templates 
@@ -44,13 +44,14 @@ export default function TemplateGrid({ templates, selectedCategory }: TemplateGr
                 template={template} 
                 userName={name} 
                 profilePic={profilePic}
+                priority={index < 4}
               />
 
               {/* Hover overlay for tint */}
               <div className="absolute inset-0 bg-violet-500/0 group-hover:bg-violet-500/10 transition-colors duration-500 rounded-3xl pointer-events-none mix-blend-overlay" />
 
               {/* Premium lock overlay */}
-              {template.isPremium && (
+              {template.isPremium && !isPremium && (
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 backdrop-blur-[0px] group-hover:backdrop-blur-sm transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
                   <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl scale-90 group-hover:scale-100 transition-transform duration-300">
                     <Lock className="w-6 h-6 text-amber-400 drop-shadow-md" />
@@ -67,7 +68,7 @@ export default function TemplateGrid({ templates, selectedCategory }: TemplateGr
                 </p>
                 <p className="text-xs text-zinc-500 mt-1">{template.category}</p>
               </div>
-              {template.isPremium && (
+              {template.isPremium && !isPremium && (
                 <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-md tracking-wider">
                   PRO
                 </span>

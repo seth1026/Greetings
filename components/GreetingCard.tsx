@@ -4,6 +4,7 @@ import React from 'react';
 import { Template } from '@/lib/templates';
 import { User, Star } from 'lucide-react';
 import Image from 'next/image';
+import { useUserStore } from '@/store/useUserStore';
 
 interface GreetingCardProps {
   template: Template;
@@ -11,6 +12,7 @@ interface GreetingCardProps {
   profilePic: string | null;
   className?: string;
   isPreview?: boolean;
+  priority?: boolean;
 }
 
 export default function GreetingCard({
@@ -19,7 +21,9 @@ export default function GreetingCard({
   profilePic,
   className = "",
   isPreview = false,
+  priority = false,
 }: GreetingCardProps) {
+  const isPremiumUser = useUserStore((state) => state.isPremium);
 
   return (
     <div
@@ -29,15 +33,24 @@ export default function GreetingCard({
         ${className}`}
     >
       {/* Background Image */}
-      <Image
-        src={template.imageUrl}
-        alt={template.title}
-        fill
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={isPreview}
-        unoptimized={false}
-      />
+      {isPreview ? (
+        <img
+          src={template.imageUrl}
+          alt={template.title}
+          crossOrigin="anonymous"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+      ) : (
+        <Image
+          src={template.imageUrl}
+          alt={template.title}
+          fill
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+          unoptimized={false}
+        />
+      )}
 
       {/* Top gradient overlay */}
       <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-10" />
@@ -49,13 +62,18 @@ export default function GreetingCard({
       <div className="absolute top-6 left-6 z-30">
         <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/40 shadow-xl backdrop-blur-md transition-transform duration-500 group-hover:scale-110 group-hover:ring-white/60 relative bg-zinc-800">
           {profilePic ? (
-            <Image
-              src={profilePic}
-              alt="Profile"
-              fill
-              className="object-cover"
-              unoptimized={profilePic.startsWith('data:')} // Can't optimize base64 easily
-            />
+            isPreview ? (
+              <img src={profilePic} alt="Profile" crossOrigin="anonymous" className="w-full h-full object-cover" />
+            ) : (
+              <Image
+                src={profilePic}
+                alt="Profile"
+                fill
+                sizes="48px"
+                className="object-cover"
+                unoptimized={profilePic.startsWith('data:')}
+              />
+            )
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
               <User className="w-6 h-6 text-white/90" />
@@ -74,7 +92,7 @@ export default function GreetingCard({
       </div>
 
       {/* Premium Badge */}
-      {template.isPremium && (
+      {template.isPremium && !isPremiumUser && (
         <div className="absolute top-6 right-6 z-30">
           <div className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-lg shadow-amber-500/20 ring-1 ring-white/20">
             <Star className="w-3 h-3 fill-white" />

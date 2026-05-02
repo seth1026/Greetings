@@ -14,11 +14,11 @@ export default function PreviewPage() {
   const params = useParams();
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
-  const { name, profilePic } = useUserStore();
+  const { name, profilePic, isPremium } = useUserStore();
   const [template, setTemplate] = useState<Template | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [safeProfilePic, setSafeProfilePic] = useState<string>('/fallback.png');
+  const [safeProfilePic, setSafeProfilePic] = useState<string | null>(null);
 
   const convertToBase64 = async (url: string) => {
     try {
@@ -43,7 +43,7 @@ export default function PreviewPage() {
 
   useEffect(() => {
     if (!profilePic) return;
-    convertToBase64(profilePic).then((img) => setSafeProfilePic(img || '/fallback.png'));
+    convertToBase64(profilePic).then((img) => setSafeProfilePic(img || null));
   }, [profilePic]);
 
   const waitForAssets = async () => {
@@ -63,7 +63,7 @@ export default function PreviewPage() {
 
   const handleDownload = async () => {
     if (!template) return;
-    if (template.isPremium) { setShowPremiumModal(true); return; }
+    if (template.isPremium && !isPremium) { setShowPremiumModal(true); return; }
     setIsGenerating(true);
     try {
       const dataUrl = await generateImage();
@@ -79,7 +79,7 @@ export default function PreviewPage() {
 
   const handleShare = async () => {
     if (!template) return;
-    if (template.isPremium) { setShowPremiumModal(true); return; }
+    if (template.isPremium && !isPremium) { setShowPremiumModal(true); return; }
     setIsGenerating(true);
     try {
       const dataUrl = await generateImage();

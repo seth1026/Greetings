@@ -17,6 +17,7 @@ export default function Footer() {
                 src="/logo.png" 
                 alt="Greetings Logo" 
                 fill 
+                sizes="32px"
                 className="object-contain" 
               />
             </div>
