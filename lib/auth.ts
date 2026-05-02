@@ -1,11 +1,10 @@
 // src/lib/auth.ts
-import { auth } from './firebase';
-import { signOut } from 'firebase/auth';
+import { supabase } from './supabase';
 import { useUserStore } from '@/store/useUserStore';
 
 export const logoutUser = async () => {
   try {
-    await signOut(auth);
+    await supabase.auth.signOut();
     useUserStore.getState().logout();
     window.location.href = '/login';   // Force redirect
   } catch (error) {

@@ -6,6 +6,7 @@ A modern, fast, and interactive web application for generating personalized, hig
 
 ## 🚀 Features
 
+- **Premium Landing Page**: A high-conversion, split-screen landing page with glassmorphic UI elements and trust indicators.
 - **Personalized Greetings**: Automatically integrates the user's name and profile picture into templates.
 - **Dynamic Templates**: A wide selection of greeting card templates categorized by occasions, festivals, and moods.
 - **Search & Filter**: Quickly find the perfect template using a responsive search and category chips.
@@ -33,7 +34,7 @@ A modern, fast, and interactive web application for generating personalized, hig
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" title="React" alt="React" width="40" height="40" />&nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" title="TypeScript" alt="TypeScript" width="40" height="40" />&nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" title="Tailwind CSS" alt="Tailwind CSS" width="40" height="40" />&nbsp;
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" title="Firebase" alt="Firebase" width="40" height="40" />&nbsp;
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/supabase/supabase-original.svg" title="Supabase" alt="Supabase" width="40" height="40" />&nbsp;
 </div>
 
 * **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
@@ -43,7 +44,7 @@ A modern, fast, and interactive web application for generating personalized, hig
 * **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 * **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Lenis](https://lenis.studiofreight.com/) (Smooth Scrolling)
 * **Image Generation**: `dom-to-image`
-* **Authentication/Backend**: [Firebase](https://firebase.google.com/)
+* **Authentication/Backend**: [Supabase](https://supabase.com/)
 * **Payments**: [Razorpay](https://razorpay.com/)
 * **Icons**: [Lucide React](https://lucide.dev/)
 
@@ -62,22 +63,14 @@ cd greetings-app
 ### 2. Install dependencies
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env.local` file in the root directory and add your credentials:
+Create a `.env` file in the root directory and add your credentials:
 ```env
-# Firebase Configuration
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 # Razorpay Configuration
 NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id

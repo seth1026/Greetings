@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { useUserStore } from '@/store/useUserStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,6 +32,23 @@ export default function LoginPage() {
     }
   };
 
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const user = session.user;
+        setName(user.user_metadata.full_name || user.email?.split('@')[0] || "User");
+        if (user.user_metadata.avatar_url) {
+          const base64 = await convertToBase64(user.user_metadata.avatar_url);
+          if (base64) setProfilePic(base64);
+        }
+        login();
+        router.push('/home');
+      }
+    };
+    checkUser();
+  }, [router, setName, setProfilePic, login]);
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -51,20 +67,16 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      setName(user.displayName || "User");
-      if (user.photoURL) {
-        const base64 = await convertToBase64(user.photoURL);
-        if (base64) setProfilePic(base64);
-      }
-      login();
-      router.push('/home');
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/login`,
+        }
+      });
+      if (error) throw error;
     } catch (error) {
       console.error(error);
       setError("Google login failed. Please try again.");
-    } finally {
       setGoogleLoading(false);
     }
   };
